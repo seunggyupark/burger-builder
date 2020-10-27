@@ -7,6 +7,7 @@ import classes from './Auth.module.css';
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 class Auth extends Component {
     state = {
@@ -46,34 +47,14 @@ class Auth extends Component {
         isSignUp: true
     }
 
-    checkValidity(value, rules) {
-        let isValid = false;
-
-        if (rules.required) {
-            isValid = value.trim() !== '';
-        }
-
-        if (rules.minLength && isValid) {
-            isValid = value.length >= rules.minLength;
-        }
-
-        if (rules.maxLength && isValid) {
-            isValid = value.length <= rules.maxLength;
-        }
-
-        return isValid;
-    }
-
     inputChangedHandler = (event, controlName) => {
-        const updatedControls = {
-            ...this.state.controls,
-            [controlName]: {
-                ...this.state.controls[controlName],
+        const updatedControls = updateObject(this.state.controls, {
+            [controlName]: updateObject(this.state.controls[controlName], {
                 value: event.target.value,
-                valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
+                valid: checkValidity(event.target.value, this.state.controls[controlName].validation),
                 touched: true
-            }
-        }
+            })
+        });
         this.setState({controls: updatedControls});
     }
 
@@ -83,8 +64,6 @@ class Auth extends Component {
     }
     
     switchAuthModeHandler = () => {
-        console.log(this.props.token);
-        console.log(this.props.loading);
         this.setState(prevState => {
             return {isSignUp: !prevState.isSignUp};
         });
