@@ -48,9 +48,9 @@ export const auth = (email, password, isSignup) => {
             password: password,
             returnSecureToken: true
         };
-        let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAwXkAyucrpInm3fUeHKSw4Csh4X_wuUbk';
+        let url = 'firebase url signup';
         if (!isSignup) {
-            url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAwXkAyucrpInm3fUeHKSw4Csh4X_wuUbk';
+            url = 'firebase url login';
         }
         axios.post(url, authData)
             .then(response => {
